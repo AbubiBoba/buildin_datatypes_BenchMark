@@ -32,7 +32,7 @@ int main() {
 	printf("Major tests results:\n");
 	testing(major_tests, n);
 
-	while(1){
+	while (1) {
 		continue;
 	}
 }
@@ -157,9 +157,33 @@ double int128_testing(const vector<int>& values, int n = 3) {
 	avg /= (double)(n);
 	return avg;
 }
+double ld_testing(const vector<int>& values, int n = 3) {
+	printf("initializing long double tests\n");
+	tStart = clock();
+	vector<long double> a(values.size());
+	for (int i = 0; i < values.size(); ++i) {
+		a[i] = values[i];
+	}
+	double avg = 0.0;
+	printf("long double init time: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
+	for (int it = 0; it < n; ++it) {
+		tStart = clock();
+		long double l = 100.0l;
+		for (int i = 0; i < a.size(); ++i)
+			for (int j = 0; j < a.size(); ++j) {
+				l *= a[j];
+				l /= 100.0l;
+			}
+		//printf("long double calc time: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
+		avg += (double)(clock() - tStart) / CLOCKS_PER_SEC;
+		printf("test#%d complete\n", it + 1);
+	}
+	avg /= (double)(n);
+	return avg;
+}
 
 void testing(const vector<int>& values, int n) {
-	double intTime, llTime, floatTime, doubleTime, int128Time;
+	double intTime, llTime, floatTime, doubleTime, int128Time, longdoubleTime;
 
 	intTime = int_testing(values, n);
 	printf("int avg time: %.2fs\n", intTime);
@@ -176,6 +200,9 @@ void testing(const vector<int>& values, int n) {
 	int128Time = int128_testing(values, n);
 	printf("int128 avg time: %.2fs\n", int128Time);
 
+	longdoubleTime = ld_testing(values, n);
+	printf("long double avg time: %.2fs\n", longdoubleTime);
+
 	printf("-----------------------------------\n");
 	printf("Results:\n");
 	printf("Int: %.2fs\n", intTime);
@@ -183,5 +210,6 @@ void testing(const vector<int>& values, int n) {
 	printf("Float: %.2fs\n", floatTime);
 	printf("Double: %.2fs\n", doubleTime);
 	printf("Int128: %.2fs\n", int128Time);
+	printf("Long double: %.2fs\n", longdoubleTime);
 	printf("-----------------------------------\n");
 }
