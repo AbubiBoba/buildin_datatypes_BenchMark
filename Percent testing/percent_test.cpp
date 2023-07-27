@@ -32,7 +32,9 @@ int main() {
 	printf("Major tests results:\n");
 	testing(major_tests, n);
 
-	getchar();
+	while(1){
+		continue;
+	}
 }
 
 double int_testing(const vector<int>& values, int n = 3) {
